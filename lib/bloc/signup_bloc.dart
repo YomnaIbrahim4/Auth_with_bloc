@@ -5,15 +5,15 @@ part 'signup_state.dart';
 
 class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   SignUpBloc() : super(SignUpInitial()) {
-    on<SignUpSubmittedEvent>(_onSignUpSubmitted);
+    on<SignUpSubmittedEvent>(onSignUpSubmitted);
     //
     on<SignUpReset>(onSignUpReset);
     //
     on<InitiSingUpScreenEvent>(onSignUpInit);
   }
 
-  // SignUpValidator signUpValidator;
-  Future<void> _onSignUpSubmitted(
+  //
+  Future<void> onSignUpSubmitted(
       SignUpSubmittedEvent event,
       Emitter<SignUpState> emit,
       ) async {

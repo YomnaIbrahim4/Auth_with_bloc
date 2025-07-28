@@ -11,7 +11,7 @@ class HomeScreen extends StatelessWidget {
         child: Text(
           "Hello in Home Screen !",
           style: TextStyle(
-            color: Colors.blue,
+            color: Colors.deepPurple,
             fontWeight: FontWeight.bold
           ),
         ),

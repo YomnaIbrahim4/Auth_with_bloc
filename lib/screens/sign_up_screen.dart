@@ -37,16 +37,13 @@ class _SignUpScreenWithBlocState extends State<SignUpScreenWithBloc> {
             ),
           );
         } else if (state is SignUpSuccess) {
-          // Show success message
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('You Signed up successfully !'),
+              content: Text('You Signed up successfully!'),
               backgroundColor: Colors.green,
               duration: Duration(seconds: 2),
             ),
           );
-
-          // Navigate after a short delay
           Future.delayed(const Duration(seconds: 2), () {
             Navigator.pushReplacement(
               context,
@@ -61,56 +58,86 @@ class _SignUpScreenWithBlocState extends State<SignUpScreenWithBloc> {
             body: Center(child: CircularProgressIndicator()),
           );
         }
+
         return Scaffold(
+          backgroundColor: Colors.grey[100],
           body: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(20),
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(24),
               child: Form(
-                autovalidateMode: AutovalidateMode.disabled,
                 key: formKey,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    const Text(
+                      'Create Account',
+                      style: TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 40),
+
+                    // Email
                     TextFormField(
                       controller: emailController,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: 'Email',
-                        border: OutlineInputBorder(),
-                        prefixIcon: Icon(Icons.email),
+                        prefixIcon: const Icon(Icons.email),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                       keyboardType: TextInputType.emailAddress,
                       validator: FormValidators.validateEmail,
                     ),
                     const SizedBox(height: 20),
+
+                    // Password
                     TextFormField(
                       controller: passwordController,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: 'Password',
-                        border: OutlineInputBorder(),
-                        prefixIcon: Icon(Icons.lock),
+                        prefixIcon: const Icon(Icons.password),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                       obscureText: true,
                       validator: FormValidators.validatePassword,
                     ),
                     const SizedBox(height: 20),
+
+                    // Confirm Password
                     TextFormField(
                       controller: confirmPasswordController,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: 'Confirm Password',
-                        border: OutlineInputBorder(),
-                        prefixIcon: Icon(Icons.lock),
+                        prefixIcon: const Icon(Icons.password_outlined),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                       obscureText: true,
-                      validator: (value) => FormValidators.validateConfirmPassword(
-                        value,
-                        passwordController.text,
-                      ),
+                      validator: (value) =>
+                          FormValidators.validateConfirmPassword(
+                            value,
+                            passwordController.text,
+                          ),
                     ),
                     const SizedBox(height: 40),
+
+                    // Button
                     SizedBox(
+                      width: double.infinity,
                       height: 50,
-                      width: 200,
                       child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.deepPurple,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
                             context.read<SignUpBloc>().add(
@@ -123,7 +150,10 @@ class _SignUpScreenWithBlocState extends State<SignUpScreenWithBloc> {
                             );
                           }
                         },
-                        child: const Text('Sign Up'),
+                        child: const Text(
+                          'Sign Up',
+                          style: TextStyle(fontSize: 18, color: Colors.white),
+                        ),
                       ),
                     ),
                   ],
