@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sign_up/bloc/signup_bloc.dart';
-import 'package:sign_up/screens/sign_up_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 
+import 'firebase_options.dart';
+import 'models/auth_repo.dart';
+import 'login_bloc/login_bloc.dart';
+import 'signup_bloc/signup_bloc.dart';
+import 'screens/login_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
@@ -13,12 +19,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Sign Up With BLoC',
-      home: BlocProvider(
-        create: (context) => SignUpBloc()..add(InitiSingUpScreenEvent()),
-        child: SignUpScreenWithBloc(),
+    final authRepo = AuthRepo();
+
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => LoginBloc(authRepo)),
+        BlocProvider(create: (_) => SignUpBloc(authRepo)),
+      ],
+      child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: LoginScreenWithBloc(),
       ),
     );
   }

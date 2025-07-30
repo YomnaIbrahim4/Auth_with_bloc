@@ -1,20 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../models/auth_repo.dart';
+import 'login_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-  static const String routeName = "home";
-  const HomeScreen({super.key});
+  final String email;
+
+  const HomeScreen({super.key, required this.email});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text(
-          "Hello in Home Screen !",
-          style: TextStyle(
-            color: Colors.deepPurple,
-            fontWeight: FontWeight.bold
-          ),
-        ),
-      ));
+      appBar: AppBar(
+        title: const Text("Home"),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () async {
+              await AuthRepo().logout();
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => const LoginScreenWithBloc()),
+              );
+            },
+          )
+        ],
+      ),
+      body: Center(child: Text("Welcome, $email!")),
+    );
   }
 }
